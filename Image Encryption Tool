@@ -1,0 +1,31 @@
+def encrypt_decrypt_bmp(input_path, output_path, key):
+    try:
+        with open(input_path, 'rb') as f:
+            data = bytearray(f.read())
+        for i in range(54, len(data)):
+            data[i] ^= key  # XOR encryption
+        with open(output_path, 'wb') as f:
+            f.write(data)
+        print(f"Output saved to {output_path}")
+    except FileNotFoundError:
+        print("File not found.")
+    except Exception as e:
+        print(f"Error: {e}")
+def main():
+    print("=== BMP Image XOR Encryption Tool ===")
+    choice = input("Do you want to (E)ncrypt or (D)ecrypt? ").strip().upper()
+    if choice not in ('E', 'D'):
+        print("Invalid choice. Use 'E' or 'D'.")
+        return
+    input_path = input("Enter path to BMP file: ").strip()
+    output_path = input("Enter path to save output BMP: ").strip()
+    try:
+        key = int(input("Enter key (0–255): "))
+        if not 0 <= key <= 255:
+            raise ValueError
+    except ValueError:
+        print("Key must be an integer between 0 and 255.")
+        return
+    encrypt_decrypt_bmp(input_path, output_path, key)
+if __name__ == "__main__":
+    main()
